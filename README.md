@@ -130,6 +130,24 @@ Open the following ports in your Cloud Provider's console (AWS Security Groups /
 
 ---
 
+## Handling AWS Instance Restarts (IP Change)
+If you **Stop** and **Start** your AWS instance, the **Public IP address will change**. You must perform these 3 updates:
+
+1.  **Update MongoDB Atlas:**
+    - Go to **Network Access** in Atlas.
+    - Delete the old IP and add the **NEW AWS Public IP**.
+2.  **Rebuild Frontend:**
+    - On your VM, go to the `frontend` folder.
+    - Re-run the build command with the **NEW IP**:
+      ```bash
+      VITE_API_URL=http://<NEW_PUBLIC_IP>:5000 npm run build
+      pm2 restart antigravity-frontend
+      ```
+3.  **New Browser URL:**
+    - Access your site at `http://<NEW_PUBLIC_IP>:3000`.
+
+---
+
 ## Useful PM2 Commands (For Deployment)
 
 | Action | Backend Command | Frontend Command |
