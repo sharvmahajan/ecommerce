@@ -76,18 +76,36 @@ sudo systemctl start mongod
 sudo systemctl enable mongod
 ```
 
-### 3. Setup Project
+### 2. Setup MongoDB (Atlas)
+If using MongoDB Atlas (Recommended for cloud deployment):
+1.  Create a cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2.  **CRITICAL STEP: Network Access**
+    - Go to **Network Access** in the Atlas sidebar.
+    - Click **Add IP Address**.
+    - Click **Allow Access From Anywhere** (or add your VM's public IP).
+    - Click **Confirm**.
+3.  **Database Access**
+    - Create a database user and save the password.
+4.  **Connection String**
+    - Click **Connect** -> **Drivers** -> Copy the connection string.
+    - Update your `.env` file on the VM with this string.
+
+### 3. Setup Project on VM
 ```bash
-git clone <your-repo-url>
-cd ECommerce
+git clone https://github.com/sharvmahajan/ecommerce.git
+cd ecommerce
 ```
 
 ### 4. Setup Backend
 ```bash
 cd backend
 npm install
-cp .env.example .env
-# Install PM2 to keep backend alive
+# Create .env file and paste your MONGODB_URI
+nano .env 
+# PORT=5000
+# MONGODB_URI=your_atlas_connection_string
+
+# Install PM2 and start server
 sudo npm install -g pm2
 pm2 start server.js --name "antigravity-backend"
 ```
@@ -97,11 +115,10 @@ pm2 start server.js --name "antigravity-backend"
 cd ../frontend
 npm install
 
-# Create production build
-# NOTE: Update VITE_API_URL to your VM's public IP in the build process if needed
-VITE_API_URL=http://<VM_PUBLIC_IP>:5000 npm run build
+# IMPORTANT: Build with your VM's Public IP
+VITE_API_URL=http://<YOUR_VM_PUBLIC_IP>:5000 npm run build
 
-# Serve frontend using 'serve'
+# Serve the production build
 sudo npm install -g serve
 pm2 start "serve -s dist -l 3000" --name "antigravity-frontend"
 ```
