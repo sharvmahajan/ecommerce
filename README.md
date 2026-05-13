@@ -130,6 +130,18 @@ Open the following ports in your Cloud Provider's console (AWS Security Groups /
 
 ---
 
+## Useful PM2 Commands (For Deployment)
+
+| Action | Backend Command | Frontend Command |
+| :--- | :--- | :--- |
+| **Start** | `pm2 start server.js --name "antigravity-backend"` | `pm2 start "serve -s dist -l 3000" --name "antigravity-frontend"` |
+| **Restart** | `pm2 restart antigravity-backend` | `pm2 restart antigravity-frontend` |
+| **Stop** | `pm2 stop antigravity-backend` | `pm2 stop antigravity-frontend` |
+| **View Logs** | `pm2 logs antigravity-backend` | `pm2 logs antigravity-frontend` |
+| **Check Status** | `pm2 status` | `pm2 status` |
+
+---
+
 ## API Endpoints
 - `GET /products` - Fetch all products
 - `GET /products/:id` - Fetch a single product by ID
@@ -138,5 +150,5 @@ Open the following ports in your Cloud Provider's console (AWS Security Groups /
 ## .env File Example
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/antigravity
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/dbname
 ```
